@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"log/slog"
+	"regexp"
 	"strings"
 )
 
@@ -25,6 +26,9 @@ type staticClientsStorage struct {
 func WithStaticClients(s Storage, staticClients []Client) Storage {
 	clientsByID := make(map[string]Client, len(staticClients))
 	for _, client := range staticClients {
+		if re, err := regexp.Compile("^" + strings.Join(client.RedirectURIs, "|") + "$"); err == nil {
+			client.RedirectURIRegex = re
+		}
 		clientsByID[client.ID] = client
 	}
 
