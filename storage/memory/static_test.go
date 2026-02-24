@@ -20,7 +20,7 @@ func TestStaticClients(t *testing.T) {
 	c3 := storage.Client{ID: "spam", Secret: "spam_secret"}
 
 	backing.CreateClient(ctx, c1)
-	s := storage.WithStaticClients(backing, []storage.Client{c2})
+	s := storage.WithStaticClients(backing, []storage.Client{c2}, logger)
 
 	tests := []struct {
 		name    string

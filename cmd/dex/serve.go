@@ -230,7 +230,7 @@ func runServe(options serveOptions) error {
 			}
 			logger.Info("config static client", "client_name", client.Name)
 		}
-		s = storage.WithStaticClients(s, c.StaticClients)
+		s = storage.WithStaticClients(s, c.StaticClients, logger)
 	}
 	if len(c.StaticPasswords) > 0 {
 		passwords := make([]storage.Password, len(c.StaticPasswords))

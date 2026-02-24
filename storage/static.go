@@ -23,10 +23,13 @@ type staticClientsStorage struct {
 }
 
 // WithStaticClients adds a read-only set of clients to the underlying storages.
-func WithStaticClients(s Storage, staticClients []Client) Storage {
+func WithStaticClients(s Storage, staticClients []Client, logger *slog.Logger) Storage {
 	clientsByID := make(map[string]Client, len(staticClients))
 	for _, client := range staticClients {
 		if re, err := regexp.Compile("^" + strings.Join(client.RedirectURIs, "|") + "$"); err == nil {
+			logger.Info(
+				"using regexp to match RedirectURIs",
+				"client", client.Name, "regex", re.String())
 			client.RedirectURIRegex = re
 		}
 		clientsByID[client.ID] = client
